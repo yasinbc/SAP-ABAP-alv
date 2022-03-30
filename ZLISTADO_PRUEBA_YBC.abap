@@ -16,6 +16,56 @@
 *
 *SELECTION-SCREEN END OF BLOCK BL1.
 
+
+type-pools: slis. "anterior a v7.40
+
+types: begin of ty_bseg,
+       bukrs_it type bseg-bukrs,
+       belnr_it type bseg-bukrs,
+       gjahr_it type bseg-bukrs,
+       werks_it type bseg-bukrs,
+       wrbtr_it type bseg-bukrs,
+end of ty_bseg.
+
+"tabla con los datos
+data: it_bseg type STANDARD TABLE OF ty_bseg,
+      it_bkpf type standard table of bkpf.
+
+"TAbla fieldcat (define campo de la tabla)
+data: if_cat type standard table of slis_fieldcat_alv,
+      wa_fcat type slis_fieldcat_alv.
+
+data: wa_layout type slis_layout_alv,
+      vl_variant type disvariant.
+refresh: it_fcat, it_bkpf, it_bseg.
+
+
+clear: wa_fcat.
+wa_fcat-fieldname = 'BUKRS_IT'.
+wa_fcat-ref_tabname = 'BSEG'.
+wa_fcat-ref_fieldname = 'BUKRS'.
+wa_fcat-seltext_m = TEXT-002.
+wa_fcat-seltext_l = TEXT-002.
+wa_fcat-key = 'X'.
+wa_fcat-no_zero = 'X'.
+APPEND wa_fcat TO it_fcat.
+
+
+
+"Armar fieldcat (definir columna del ALV)
+clear: wa_fcat.
+wa_fcat-fieldname = 'BUKRS_IT'.
+wa_fcat-outputlen = 10.
+wa_fcat-seltext_s = 'Nº doc.'.
+wa_fcat-seltext_m = TEXT-002.
+wa_fcat-seltext_l = TEXT-002.
+wa_fcat-key = 'X'.
+wa_fcat-no_zero = 'X'.
+APPEND wa_fcat TO it_fcat.
+
+
+
+
 CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
 * EXPORTING
 *   I_INTERFACE_CHECK                 = ' '
@@ -32,7 +82,7 @@ CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
 *   I_GRID_TITLE                      =
 *   I_GRID_SETTINGS                   =
 *   IS_LAYOUT                         =
-*   IT_FIELDCAT                       = 
+*   IT_FIELDCAT                       =
 *   IT_EXCLUDING                      =
 *   IT_SPECIAL_GROUPS                 =
 *   IT_SORT                           =
