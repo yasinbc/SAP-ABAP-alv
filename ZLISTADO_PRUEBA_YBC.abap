@@ -9,6 +9,15 @@ DATA: wa_cliente TYPE ztybc_clientes.
 DATA: tl_clientes type table of ztybc_clientes.
 
 
+*--------------------------------------------------------------------*
+* TYPES-POOLS
+*--------------------------------------------------------------------*
+TYPE-POOLS: slis. "tabla especial listados ALV
+*--------------------------------------------------------------------*
+* TABLAS INTERNAS / ESTRUCTURAS
+*--------------------------------------------------------------------*
+
+
 SELECTION-SCREEN BEGIN OF BLOCK bl1 WITH FRAME TITLE TEXT-001.
 
 SELECT-OPTIONS:
@@ -43,10 +52,12 @@ PERFORM seleccion.
 *------------------------------------------------------------------*
 END-OF-SELECTION.
 PERFORM listar.
+*PERFORM modificar_fcatalog.
 
 DATA: g_pid like sy-repid.
 g_pid = sy-repid.
 
+DATA: gt_fcat TYPE slis_t_fieldcat_alv.
 
 
 CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
@@ -60,12 +71,12 @@ CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
 *   I_CALLBACK_TOP_OF_PAGE            = ' '
 *   I_CALLBACK_HTML_TOP_OF_PAGE       = ' '
 *   I_CALLBACK_HTML_END_OF_LIST       = ' '
-   I_STRUCTURE_NAME                  = tl_clientes
+*   I_STRUCTURE_NAME                  = tl_clientes
 *   I_BACKGROUND_ID                   = ' '
 *   I_GRID_TITLE                      =
 *   I_GRID_SETTINGS                   =
 *   IS_LAYOUT                         =
-*   IT_FIELDCAT                       =
+   IT_FIELDCAT                       = gt_fcat[].
 *   IT_EXCLUDING                      =
 *   IT_SPECIAL_GROUPS                 =
 *   IT_SORT                           =
