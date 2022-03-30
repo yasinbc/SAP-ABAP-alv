@@ -76,7 +76,7 @@ CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
 *   I_GRID_TITLE                      =
 *   I_GRID_SETTINGS                   =
 *   IS_LAYOUT                         =
-   IT_FIELDCAT                       = gt_fcat[].
+   IT_FIELDCAT                       = gt_fcat[]
 *   IT_EXCLUDING                      =
 *   IT_SPECIAL_GROUPS                 =
 *   IT_SORT                           =
@@ -355,3 +355,55 @@ ENDFORM.
 FORM listar .
 
 ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form modificar_fcatalog
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+*FORM modificar_fcatalog.
+
+*  FIELDS-SIMBOL:
+*  <fs_fcat> TYPE slis_fieldcat_alv.
+*
+*  CALL FUNCTION 'REUSE_ALV_FIELDCATALOG_MERGE'
+*    EXPORTING
+*      I_PROGRAM_NAME             = g_pid
+**      I_INTERNAL_TABNAME         = c_internal_tabname
+*      I_STRUCTURE_NAME           = 'ZLISTDO_PRUEBA_YBC'
+*      CHANGING
+*          ct_fieldcat                = gt_fcat
+*    EXCEPTIONS
+*      inconsistent_interface     = 1
+*      program_error              = 2
+*      OTHERS                     = 3
+*
+*    IF sy-subrc <> 0.
+*      ESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+*      WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+*    ENDIF.
+*
+*    "MODIFICAMOS LA CABECERA DE LAS COLUMNAS
+*        LOOP AT gt_fcat ASSIGNING <fs_fcat>.
+*
+*          IF <fs_fcat>-fieldname = 'CAMPO_1'.
+*
+*             <fs_fcat>-seletext_1 = 'Cliente'.
+*             <fs_fcat>-seltext_m =  'Cliente'.
+*             <fs_fcat>-seltext_s = 'Cliente'.
+*             <fs_fcat>-REPTEXT_DDIC = 'Cliente'.
+*
+*          ELSEIF <fs_fcat>-fieldname = 'CAMPO_2'.
+*
+*             <fs_fcat>-seltext_l = 'Número de Cliente'.
+*             <fs_fcat>-seltext_m = 'Num. Cliente'.
+*             <fs_fcat>-seltext_s = 'NCliente'.
+*             <fs_fcat>-REPTEXT_DDIC = 'Número de Cliente'.
+*
+*          ENDIF.
+*
+*       ENDLOOP. "at gt_fcat
+*
+*ENDFORM.
